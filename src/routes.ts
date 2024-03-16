@@ -7,7 +7,7 @@ const router = Router();
 router.post('/signup', authController);
 
 router.get('/test-error-route', (req, res) => {
-	throw new Error('Rota para testar erro');
+	throw new Error('Internal server error');
 });
 
 export { router };

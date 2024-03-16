@@ -1,52 +1,21 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import db from '../database';
+import { authService } from '../services/authService';
 
-import { AccountTypeT, BodyT, UserT } from '../types/auth';
+import { BodyT } from '../types/auth';
 
-const accountTypeTable: Record<AccountTypeT, string> = {
-	patient: 'Patients',
-	caregiver: 'Caregivers',
-};
-
-async function authController(req: Request, res: Response) {
-	const { accountType, name, email, password } = req.body as BodyT;
-
-	if (!accountType || !name || !email || !password) {
-		return res.status(400).json({
-			status: 'error',
-			message: 'Invalid request',
-		});
-	}
-
-	if (!['patient', 'caregiver'].includes(accountType)) {
-		return res.status(400).json({
-			status: 'error',
-			message: 'Invalid request',
-		});
-	}
+async function authController(req: Request, res: Response, next: NextFunction) {
+	const { name, email, password, accountType } = req.body as BodyT;
 
 	try {
-		const user = await db.insert('Users', {
-			columns: ['name', 'email', 'password'],
-			values: [name, email, password],
-		});
-		user.accountType = accountType;
-
-		await db.insert(accountTypeTable[accountType], {
-			columns: ['userId'],
-			values: [user.id],
-		});
+		const user = await authService({ name, email, password, accountType });
 
 		return res.status(201).json({
 			status: 'success',
 			userId: user.id,
 		});
 	} catch (error) {
-		return res.status(500).json({
-			status: 'error',
-			message: 'Erro ao inserir usuário no banco',
-		});
+		next(error);
 	}
 }
 
