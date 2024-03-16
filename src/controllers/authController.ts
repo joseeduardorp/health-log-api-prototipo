@@ -26,10 +26,8 @@ async function authController(req: Request, res: Response) {
 		});
 	}
 
-	let user: UserT;
-
 	try {
-		user = await db.insert('Users', {
+		const user = await db.insert('Users', {
 			columns: ['name', 'email', 'password'],
 			values: [name, email, password],
 		});
@@ -39,16 +37,17 @@ async function authController(req: Request, res: Response) {
 			columns: ['userId'],
 			values: [user.id],
 		});
+
+		return res.status(201).json({
+			status: 'success',
+			userId: user.id,
+		});
 	} catch (error) {
-		console.log('error:', error);
-
-		throw new Error('Erro ao inserir usuário no banco');
+		return res.status(500).json({
+			status: 'error',
+			message: 'Erro ao inserir usuário no banco',
+		});
 	}
-
-	return res.status(201).json({
-		status: 'success',
-		userId: user.id,
-	});
 }
 
 export { authController };

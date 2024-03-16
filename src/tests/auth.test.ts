@@ -14,16 +14,30 @@ describe('Autenticação do usuário', () => {
 	});
 
 	afterAll((done) => {
-		db.disconnect();
-		done();
+		db.disconnect().then(() => done());
 	});
 
-	it('Deve cadastrar um novo usuário', async () => {
+	it('Deve cadastrar um novo usuário do tipo "patient"', async () => {
 		const randomUser = genRandomUser();
 		const res = await request(app)
 			.post('/signup')
 			.send({
 				accountType: 'patient',
+				name: randomUser,
+				email: randomUser + '@gmail.com',
+				password: 'senha',
+			});
+
+		expect(res.statusCode).toEqual(201);
+		expect(res.body.status).toBe('success');
+	});
+
+	it('Deve cadastrar um novo usuário do tipo "caregiver"', async () => {
+		const randomUser = genRandomUser();
+		const res = await request(app)
+			.post('/signup')
+			.send({
+				accountType: 'caregiver',
 				name: randomUser,
 				email: randomUser + '@gmail.com',
 				password: 'senha',
@@ -67,6 +81,23 @@ describe('Autenticação do usuário', () => {
 		};
 
 		expect(res.statusCode).toEqual(400);
+		expect(res.body).toEqual(error);
+	});
+
+	it('Deve retornar um erro 500 ao tentar usar e-mail já cadastrado', async () => {
+		const res = await request(app).post('/signup').send({
+			accountType: 'patient',
+			name: 'Fulano',
+			email: 'fulano@gmail.com',
+			password: 'senha',
+		});
+
+		const error = {
+			status: 'error',
+			message: 'Erro ao inserir usuário no banco',
+		};
+
+		expect(res.statusCode).toEqual(500);
 		expect(res.body).toEqual(error);
 	});
 });
