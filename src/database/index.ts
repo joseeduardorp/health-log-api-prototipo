@@ -18,19 +18,11 @@ class Database {
 	}
 
 	public async connect() {
-		try {
-			await this.client.connect();
-		} catch (error) {
-			console.log('Erro ao se conectar ao banco de dados:', error);
-		}
+		await this.client.connect();
 	}
 
 	public async disconnect() {
-		try {
-			await this.client.end();
-		} catch (error) {
-			console.log('Erro ao se desconectar do banco de dados:', error);
-		}
+		await this.client.end();
 	}
 
 	public async insert(table: string, params: InsertParamsT) {

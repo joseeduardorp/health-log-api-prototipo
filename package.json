@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "nodemon",
 		"build": "npx tsc",
-		"test": "jest"
+		"test": "jest",
+		"test:w": "jest --watch"
 	},
 	"author": "",
 	"license": "ISC",
