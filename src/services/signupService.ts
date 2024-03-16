@@ -1,6 +1,6 @@
 import db from '../database';
 
-import { AccountTypeT, BodyT, UserT } from '../types/auth';
+import { AccountTypeT, BodyT, UserT } from '../types/signup';
 import { CustomError } from '../utils/customError';
 
 const accountTypeTable: Record<AccountTypeT, string> = {
@@ -8,7 +8,7 @@ const accountTypeTable: Record<AccountTypeT, string> = {
 	caregiver: 'Caregivers',
 };
 
-async function authService({
+async function signupService({
 	name,
 	email,
 	password,
@@ -39,4 +39,4 @@ async function authService({
 	}
 }
 
-export { authService };
+export { signupService };

@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
-import { authController } from './controllers/authController';
+import { signupController } from './controllers/signupController';
 
 const router = Router();
 
-router.post('/signup', authController);
+router.post('/signup', signupController);
 
 router.get('/test-error-route', (req, res) => {
 	throw new Error('Internal server error');
