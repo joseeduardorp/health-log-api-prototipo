@@ -1,6 +1,6 @@
 import { Client } from 'pg';
 
-import { InsertParamsT } from './types';
+import { InsertParamsT } from '../types/database';
 
 class Database {
 	private client: Client;
