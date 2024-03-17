@@ -8,7 +8,7 @@ function genRandomUser() {
 	return Math.random().toString(32).substring(2, 12);
 }
 
-describe('Autenticação do usuário', () => {
+describe('Cadastro do usuário', () => {
 	beforeAll((done) => {
 		done();
 	});

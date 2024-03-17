@@ -1,6 +1,8 @@
 import db from '../database';
 
-import { AccountTypeT, BodyT, UserT } from '../types/signup';
+import { BodyT, UserT } from '../types/signup';
+import { AccountTypeT } from '../types/user';
+
 import { CustomError } from '../utils/customError';
 
 const accountTypeTable: Record<AccountTypeT, string> = {

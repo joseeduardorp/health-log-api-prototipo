@@ -34,6 +34,34 @@ class Database {
 
 		return res.rows[0];
 	}
+
+	public async select(
+		table: string,
+		where?: Record<string, any>,
+		limit?: number
+	) {
+		let query = `SELECT * FROM "${table}"`;
+
+		if (where) {
+			const keys = Object.keys(where);
+			const filter = keys
+				.map((key) => {
+					if (typeof where[key] === 'string') return `"${key}"='${where[key]}'`;
+					return `"${key}"=${where[key]}`;
+				})
+				.join(' AND ');
+
+			query += ' WHERE ' + filter;
+		}
+
+		if (limit) {
+			query += ' LIMIT ' + limit;
+		}
+
+		const res = await this.client.query(query);
+
+		return res.rows;
+	}
 }
 
 export default new Database();

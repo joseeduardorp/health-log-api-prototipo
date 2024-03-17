@@ -1,15 +1,9 @@
-export type AccountTypeT = 'patient' | 'caregiver';
+import { UserT as BaseUserT, AccountTypeT } from './user';
 
-export type BodyT = {
-	name: string;
-	email: string;
-	password: string;
+export type BodyT = Omit<BaseUserT, 'id' | 'createdAt' | 'updatedAt'> & {
 	accountType: AccountTypeT;
 };
 
-export type UserT = {
-	id: string;
-	name: string;
-	email: string;
+export type UserT = Omit<BaseUserT, 'password' | 'createdAt' | 'updatedAt'> & {
 	accountType: AccountTypeT;
 };
