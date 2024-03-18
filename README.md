@@ -1,6 +1,8 @@
 # API do projeto Health Log
 
-Versão protótipo da API do projeto Health Log, para avaliar a escolha das tecnologias escolhidas.
+Versão protótipo da API do projeto Health Log, sendo desenvolvida com o objetivo
+de avaliar as tecnologias escolhidas e verificar a necessidade de uso outras
+ferramentas/tecnologias.
 
 ## Pré-requisitos
 
@@ -24,8 +26,8 @@ Versão protótipo da API do projeto Health Log, para avaliar a escolha das tecn
 
 ## Funcionalidades Implementadas
 
-- Cadastro de usuários.
-- ...
+- Cadastro de pacientes e cuidadores.
+- Acessar conta do usuário.
 
 ## Como Executar
 
