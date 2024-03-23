@@ -1,4 +1,4 @@
-# API do projeto Health Log
+# API do projeto Health Log - [Descontinuado]
 
 Versão protótipo da API do projeto Health Log, sendo desenvolvida com o objetivo
 de avaliar as tecnologias escolhidas e verificar a necessidade de uso outras
