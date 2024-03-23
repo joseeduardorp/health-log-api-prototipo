@@ -1,8 +1,5 @@
--- Controle de Remédios - Protótipo
-CREATE DATABASE cdr_proto;
-
 -- Tabelas principais
-CREATE TABLE "Users" (
+CREATE TABLE IF NOT EXISTS "Users" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR(100) NOT NULL,
   "email" VARCHAR(50) UNIQUE NOT NULL,
@@ -11,7 +8,7 @@ CREATE TABLE "Users" (
   "updatedAt" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
 );
 
-CREATE TABLE "Medicines" (
+CREATE TABLE IF NOT EXISTS "Medicines" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR(100) NOT NULL,
   "nickname" VARCHAR(50),
@@ -26,28 +23,28 @@ CREATE TABLE "Medicines" (
 );
 
 -- Tabelas de associação/junção
-CREATE TABLE "Patients" (
+CREATE TABLE IF NOT EXISTS "Patients" (
   "patientId" SERIAL PRIMARY KEY,
   "userId" INT
 );
 
-CREATE TABLE "Caregivers" (
+CREATE TABLE IF NOT EXISTS "Caregivers" (
   "caregiverId" SERIAL PRIMARY KEY,
   "userId" INT
 );
 
-CREATE TABLE "PatientsCaregivers" (
+CREATE TABLE IF NOT EXISTS "PatientsCaregivers" (
   "patientId" INT,
   "caregiverId" INT
 );
 
-CREATE TABLE "PatientMedicines" (
+CREATE TABLE IF NOT EXISTS "PatientMedicines" (
   "id" SERIAL PRIMARY KEY,
   "patientId" INT,
   "medicineId" INT
 );
 
-CREATE TABLE "AppliedPatientMedicines" (
+CREATE TABLE IF NOT EXISTS "AppliedPatientMedicines" (
   "id" SERIAL PRIMARY KEY,
   "patientId" INT,
   "medicineId" INT,

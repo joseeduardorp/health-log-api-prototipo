@@ -38,11 +38,10 @@ ferramentas/tecnologias.
   npm install
 ```
 
-3. Crie um container no Docker com a imagem do PostgreSQL:
+3. Execute o Docker Compose para configurar o container do PostgreSQL:
 
 ```bash
-  docker run --name {nome_do_container} -e POSTGRES_PASSWORD={sua_senha} -p 5432:5432 -d postgres
-  docker start {nome_do_container}
+  docker compose up -d
 ```
 
 4. Inicie o servidor:

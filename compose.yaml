@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: remedios
+      POSTGRES_DB: cdr_proto
+    volumes:
+      - ./src/database/scripts.sql:/docker-entrypoint-initdb.d/scripts.sql
+      - cdr_proto:/var/lib/postgresql/data
+
+volumes:
+  cdr_proto:
