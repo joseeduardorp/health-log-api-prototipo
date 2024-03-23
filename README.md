@@ -1,8 +1,8 @@
-# API do projeto Health Log - [Descontinuado]
+# API do projeto Health Log - v1 [Descontinuado]
 
-Versão protótipo da API do projeto Health Log, sendo desenvolvida com o objetivo
-de avaliar as tecnologias escolhidas e verificar a necessidade de uso outras
-ferramentas/tecnologias.
+Versão v1 do protótipo da API do projeto Health Log, sendo desenvolvida com o
+objetivo de avaliar as tecnologias escolhidas e verificar a necessidade de uso
+outras ferramentas/tecnologias.
 
 ## Pré-requisitos
 
