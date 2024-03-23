@@ -25,6 +25,14 @@ class Database {
 		await this.client.end();
 	}
 
+	public async truncate(table: string) {
+		try {
+			await this.client.query(`TRUNCATE TABLE "${table}" CASCADE;`);
+		} catch (error) {
+			console.log('truncate error:', error);
+		}
+	}
+
 	public async insert(table: string, params: InsertParamsT) {
 		const cols = params.columns.map((col) => `"${col}"`).join(', ');
 		const vals = params.columns.map((v, i) => `$${i + 1}`);

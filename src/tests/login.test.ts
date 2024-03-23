@@ -4,20 +4,82 @@ import request from 'supertest';
 import app from '../app';
 import db from '../database';
 
+const DEFAULT_USER = {
+	name: 'default user',
+	email: 'default.user@email.com',
+	password: 'defaultpasswd',
+};
+const DEFAULT_PATIENT = {
+	name: 'patient user',
+	email: 'patient.user@email.com',
+	password: 'patientpasswd',
+};
+const DEFAULT_CAREGIVER = {
+	name: 'caregiver user',
+	email: 'caregiver.user@email.com',
+	password: 'caregiverpasswd',
+};
+
+async function cleanTables() {
+	await db.truncate('Users');
+	await db.truncate('Patients');
+	await db.truncate('Caregivers');
+}
+
 describe('Acessar conta do usuário', () => {
 	beforeAll((done) => {
+		// cadastra um usuário
+		db.insert('Users', {
+			columns: ['name', 'email', 'password'],
+			values: [DEFAULT_USER.name, DEFAULT_USER.email, DEFAULT_USER.password],
+		});
+
+		// cadastra um paciente
+		db.insert('Users', {
+			columns: ['name', 'email', 'password'],
+			values: [
+				DEFAULT_PATIENT.name,
+				DEFAULT_PATIENT.email,
+				DEFAULT_PATIENT.password,
+			],
+		}).then(async (user) => {
+			await db.insert('Patients', {
+				columns: ['userId'],
+				values: [user.id],
+			});
+		});
+
+		// cadastra um cuidador
+		db.insert('Users', {
+			columns: ['name', 'email', 'password'],
+			values: [
+				DEFAULT_CAREGIVER.name,
+				DEFAULT_CAREGIVER.email,
+				DEFAULT_CAREGIVER.password,
+			],
+		}).then(async (user) => {
+			await db.insert('Caregivers', {
+				columns: ['userId'],
+				values: [user.id],
+			});
+		});
+
 		done();
 	});
 
 	afterAll((done) => {
-		db.disconnect().then(() => done());
+		cleanTables().then(async () => {
+			await db.disconnect();
+
+			done();
+		});
 	});
 
 	it('Deve acessar a conta como usuário do tipo "patient"', async () => {
 		const res = await request(app).post('/login').send({
 			accountType: 'patient',
-			email: 'telbpdnccb@gmail.com',
-			password: 'senha',
+			email: DEFAULT_PATIENT.email,
+			password: DEFAULT_PATIENT.password,
 		});
 
 		expect(res.statusCode).toEqual(200);
@@ -28,8 +90,8 @@ describe('Acessar conta do usuário', () => {
 	it('Deve acessar a conta como usuário do tipo "caregiver"', async () => {
 		const res = await request(app).post('/login').send({
 			accountType: 'caregiver',
-			email: 'kdqbk5pdk6@gmail.com',
-			password: 'senha',
+			email: DEFAULT_CAREGIVER.email,
+			password: DEFAULT_CAREGIVER.password,
 		});
 
 		expect(res.statusCode).toEqual(200);
@@ -40,7 +102,7 @@ describe('Acessar conta do usuário', () => {
 	it('Deve retornar um erro 404 quando usar credênciais inválidas', async () => {
 		const res = await request(app).post('/login').send({
 			accountType: 'caregiver',
-			email: 'kdqbk5pdk6@gmail.com',
+			email: DEFAULT_USER.email,
 			password: 'senhaincorreta',
 		});
 
@@ -72,8 +134,8 @@ describe('Acessar conta do usuário', () => {
 	it('Deve retornar um erro 400 quando accountType for diferente de "patient" ou "caregiver"', async () => {
 		const res = await request(app).post('/login').send({
 			accountType: 'other',
-			email: 'kdqbk5pdk6@gmail.com',
-			password: 'senha',
+			email: DEFAULT_USER.email,
+			password: DEFAULT_USER.password,
 		});
 
 		const error = {
@@ -89,7 +151,7 @@ describe('Acessar conta do usuário', () => {
 		const res = await request(app).post('/login').send({
 			accountType: 'patient',
 			email: 'emaildoesnotexists@gmail.com',
-			password: 'senha',
+			password: 'passwd',
 		});
 
 		const error = {
@@ -104,8 +166,8 @@ describe('Acessar conta do usuário', () => {
 	it('Deve retornar um erro 500 quando o usuário existe, mas não está cadastrado como "patient" ou "caregiver"', async () => {
 		const res = await request(app).post('/login').send({
 			accountType: 'patient',
-			email: 'fulano@gmail.com',
-			password: 'senha',
+			email: DEFAULT_USER.email,
+			password: DEFAULT_USER.password,
 		});
 
 		const error = {

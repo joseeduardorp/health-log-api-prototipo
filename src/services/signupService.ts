@@ -24,6 +24,12 @@ async function signupService({
 		throw new CustomError(400, 'Invalid request');
 	}
 
+	const [userData] = await db.select('Users', { email });
+
+	if (userData) {
+		throw new CustomError(500, 'User already exists!');
+	}
+
 	try {
 		const user: UserT = await db.insert('Users', {
 			columns: ['name', 'email', 'password'],
