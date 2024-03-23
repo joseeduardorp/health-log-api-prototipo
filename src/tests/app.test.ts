@@ -1,9 +1,18 @@
-import { describe, expect, it } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import request from 'supertest';
 
 import app from '../app';
+import db from '../database';
 
 describe('Erros genéricos de requisição', () => {
+	beforeAll((done) => {
+		done();
+	});
+
+	afterAll((done) => {
+		db.disconnect().then(() => done());
+	});
+
 	it('Deve retornar um erro 500', async () => {
 		const res = await request(app).get('/test-error-route');
 
