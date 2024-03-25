@@ -3,6 +3,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import { HandlerError } from './types/error';
 import { CustomError } from './utils/customError';
 
+import { router } from './routes';
+
 const app = express();
 
 app.use(express.json());
@@ -23,6 +25,5 @@ app.use(
 		});
 	}
 );
-
 
 export default app;
