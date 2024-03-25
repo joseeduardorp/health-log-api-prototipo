@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: dockerpasswd
+      POSTGRES_DB: health_log
+    volumes:
+      - ./src/database/scripts.sql:/docker-entrypoint-initdb.d/scripts.sql
+      - health_log:/var/lib/postgresql/data
+
+volumes:
+  health_log:
