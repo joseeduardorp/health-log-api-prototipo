@@ -2,7 +2,11 @@ import knex, { Knex } from 'knex';
 
 import config from '../../config';
 
-import { IUserInsertData, IUserResult } from '../types/database';
+import {
+	IUserInsertData,
+	IUserResult,
+	ProfileTypeTables,
+} from '../types/database';
 
 class Database {
 	private client: Knex;
@@ -45,6 +49,15 @@ class Database {
 			.first<IUserResult>();
 
 		return user;
+	}
+
+	public async addUserToProfile(
+		profileType: ProfileTypeTables,
+		userId: string
+	) {
+		const [profileIds] = await this.client(profileType).insert({ userId }, '*');
+
+		return profileIds;
 	}
 }
 

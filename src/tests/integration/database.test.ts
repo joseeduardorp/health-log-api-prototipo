@@ -1,17 +1,25 @@
-import { describe, it, expect, jest, beforeAll, afterAll } from '@jest/globals';
+import {
+	describe,
+	it,
+	expect,
+	jest,
+	afterAll,
+	beforeEach,
+} from '@jest/globals';
 
 import db from '../../database';
 
 import { IUserInsertData } from '../../types/database';
 
 describe('Database Integration', () => {
-	beforeAll((done) => {
-		db.truncate('Users').then(() => done());
+	beforeEach(async () => {
+		db.truncate('Users');
+		db.truncate('Patients');
 	});
 
 	afterAll((done) => {
-		db.truncate('Users').then(() => {
-			db.disconnect().then(() => done());
+		db.disconnect().then(() => {
+			done();
 		});
 	});
 
@@ -51,5 +59,39 @@ describe('Database Integration', () => {
 		expect(user.email).toBe(email);
 
 		findByEmail.mockClear();
+	});
+
+	it('Should add an user to Patients tables', async () => {
+		const addToProfileSpy = jest.spyOn(db, 'addUserToProfile');
+
+		const newUser: IUserInsertData = {
+			name: 'Jonh Doe',
+			email: 'jonh@example.com',
+			password: '12345',
+		};
+
+		const user = await db.addUser(newUser);
+		const profileIds = await db.addUserToProfile('Patients', user.id);
+
+		expect(addToProfileSpy).toBeCalledWith('Patients', user.id);
+		expect(profileIds).toHaveProperty('patientId');
+		expect(profileIds).toHaveProperty('userId', user.id);
+	});
+
+	it('Should add an user to Caregivers tables', async () => {
+		const addToProfileSpy = jest.spyOn(db, 'addUserToProfile');
+
+		const newUser: IUserInsertData = {
+			name: 'Jane Doe',
+			email: 'jane@example.com',
+			password: '12345',
+		};
+
+		const user = await db.addUser(newUser);
+		const profileIds = await db.addUserToProfile('Caregivers', user.id);
+
+		expect(addToProfileSpy).toBeCalledWith('Caregivers', user.id);
+		expect(profileIds).toHaveProperty('caregiverId');
+		expect(profileIds).toHaveProperty('userId', user.id);
 	});
 });
