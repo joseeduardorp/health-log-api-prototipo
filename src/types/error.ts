@@ -1,3 +1,3 @@
-import { CustomError } from '../utils/customError';
+import { ResponseError } from '../utils/responseError';
 
-export type HandlerError = Error | CustomError;
+export type THandlerError = Error | ResponseError;

@@ -1,17 +1,9 @@
 import { Router } from 'express';
 
+import { createUserController } from './controllers/createUserController';
+
 const router = Router();
 
-router.get('/', (req, res) => {
-	const { method, path } = req;
-
-	res.json({
-		request: `${method}:${path}`,
-	});
-});
-
-router.get('/test-error-route', (req, res) => {
-	throw new Error('Internal server error');
-});
+router.get('/', createUserController);
 
 export { router };
