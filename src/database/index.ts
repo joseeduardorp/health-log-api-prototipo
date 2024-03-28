@@ -59,6 +59,19 @@ class Database {
 
 		return profileIds;
 	}
+
+	public async findUserProfileId(
+		profileType: ProfileTypeTables,
+		userId: string
+	) {
+		const ids = await this.client
+			.select()
+			.from(profileType)
+			.where('userId', userId)
+			.first();
+
+		return ids;
+	}
 }
 
 export default new Database();

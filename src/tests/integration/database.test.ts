@@ -13,8 +13,8 @@ import { IUserInsertData } from '../../types/database';
 
 describe('Database Integration', () => {
 	beforeEach(async () => {
-		db.truncate('Users');
-		db.truncate('Patients');
+		await db.truncate('Users');
+		await db.truncate('Patients');
 	});
 
 	afterAll((done) => {
@@ -93,5 +93,35 @@ describe('Database Integration', () => {
 		expect(addToProfileSpy).toBeCalledWith('Caregivers', user.id);
 		expect(profileIds).toHaveProperty('caregiverId');
 		expect(profileIds).toHaveProperty('userId', user.id);
+	});
+
+	it('Should find a caregiverId by userId', async () => {
+		const newUser: IUserInsertData = {
+			name: 'Jane Doe',
+			email: 'jane@example.com',
+			password: '12345',
+		};
+		const user = await db.addUser(newUser);
+		await db.addUserToProfile('Caregivers', user.id);
+
+		const ids = await db.findUserProfileId('Caregivers', user.id);
+
+		expect(ids).toBeTruthy();
+		expect(ids).toHaveProperty('caregiverId');
+	});
+
+	it('Should find a patientId by userId', async () => {
+		const newUser: IUserInsertData = {
+			name: 'John Doe',
+			email: 'john@example.com',
+			password: '12345',
+		};
+		const user = await db.addUser(newUser);
+		await db.addUserToProfile('Patients', user.id);
+
+		const ids = await db.findUserProfileId('Patients', user.id);
+
+		expect(ids).toBeTruthy();
+		expect(ids).toHaveProperty('patientId');
 	});
 });
