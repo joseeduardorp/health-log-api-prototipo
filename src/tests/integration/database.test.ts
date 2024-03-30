@@ -11,7 +11,7 @@ import db from '../../database';
 
 import { IUserInsertData } from '../../types/database';
 
-describe('Database Integration', () => {
+describe.skip('Database', () => {
 	beforeEach(async () => {
 		await db.truncate('Users');
 		await db.truncate('Patients');

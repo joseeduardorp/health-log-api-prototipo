@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "nodemon",
 		"build": "npx tsc",
-		"test": "jest",
+		"test": "jest --verbose",
 		"test:w": "jest --watch",
 		"test:d": "jest --detectOpenHandles"
 	},
