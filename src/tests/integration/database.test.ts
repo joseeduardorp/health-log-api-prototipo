@@ -1,18 +1,11 @@
-import {
-	describe,
-	it,
-	expect,
-	jest,
-	afterAll,
-	beforeEach,
-} from '@jest/globals';
+import { describe, it, expect, jest, afterAll, afterEach } from '@jest/globals';
 
 import db from '../../database';
 
 import { IUserInsertData } from '../../types/database';
 
-describe.skip('Database', () => {
-	beforeEach(async () => {
+describe('Database', () => {
+	afterEach(async () => {
 		await db.truncate('Users');
 		await db.truncate('Patients');
 	});
