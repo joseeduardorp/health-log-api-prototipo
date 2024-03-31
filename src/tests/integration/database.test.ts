@@ -55,8 +55,8 @@ describe.skip('Database', () => {
 		const user = await db.findUserByEmail(email);
 
 		expect(findByEmail).toBeCalledWith(email);
-		expect(user).toHaveProperty('email');
-		expect(user.email).toBe(email);
+		expect(user).not.toBeUndefined();
+		expect(user).toHaveProperty('email', email);
 
 		findByEmail.mockClear();
 	});
