@@ -32,7 +32,7 @@ function mockUserServiceResult(user: INewUser) {
 		.mockResolvedValue(user);
 }
 
-describe.only('UserController', () => {
+describe('UserController', () => {
 	let req: Partial<Request>;
 	let res: Partial<Response>;
 	let next = jest.fn<NextFunction>();

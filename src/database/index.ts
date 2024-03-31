@@ -33,10 +33,9 @@ class Database {
 	}
 
 	public async addUser({ name, email, password }: IUserInsertData) {
-		const [user] = await this.client<IUserResult>('Users').insert(
-			{ name, email, password },
-			'*'
-		);
+		const [user] = await this.client('Users')
+			.insert({ name, email, password })
+			.returning<IUserResult[]>('*');
 
 		return user;
 	}
@@ -46,7 +45,7 @@ class Database {
 			.select()
 			.from('Users')
 			.where('email', email)
-			.first<IUserResult>();
+			.first<IUserResult | undefined>();
 
 		return user;
 	}
