@@ -1,27 +1,23 @@
-import { describe, it, expect, jest, afterAll, afterEach } from '@jest/globals';
+import { describe, it, expect, jest, afterAll } from '@jest/globals';
 
 import db from '../../database';
 
 import { IUserInsertData } from '../../types/database';
 
 describe('Database', () => {
-	afterEach(async () => {
+	afterAll(async () => {
 		await db.truncate('Users');
 		await db.truncate('Patients');
-	});
-
-	afterAll((done) => {
-		db.disconnect().then(() => {
-			done();
-		});
+		await db.truncate('Caregivers');
+		await db.disconnect();
 	});
 
 	it('Should add and return a new user to the database', async () => {
 		const addUserSpy = jest.spyOn(db, 'addUser');
 
 		const user: IUserInsertData = {
-			name: 'John Doe',
-			email: 'john@example.com',
+			name: 'New User',
+			email: 'new.user@example.com',
 			password: '12345',
 		};
 		const addedUser = await db.addUser(user);
@@ -36,8 +32,8 @@ describe('Database', () => {
 
 	it('Should find a user by email', async () => {
 		const newUser: IUserInsertData = {
-			name: 'Jane Doe',
-			email: 'jane@example.com',
+			name: 'User To Find',
+			email: 'user.tofind@example.com',
 			password: '12345',
 		};
 		await db.addUser(newUser);
@@ -58,8 +54,8 @@ describe('Database', () => {
 		const addToProfileSpy = jest.spyOn(db, 'addUserToProfile');
 
 		const newUser: IUserInsertData = {
-			name: 'Jonh Doe',
-			email: 'jonh@example.com',
+			name: 'Patient User',
+			email: 'patient.user@example.com',
 			password: '12345',
 		};
 
@@ -75,8 +71,8 @@ describe('Database', () => {
 		const addToProfileSpy = jest.spyOn(db, 'addUserToProfile');
 
 		const newUser: IUserInsertData = {
-			name: 'Jane Doe',
-			email: 'jane@example.com',
+			name: 'Caregiver User',
+			email: 'caregiver.user@example.com',
 			password: '12345',
 		};
 
@@ -90,8 +86,8 @@ describe('Database', () => {
 
 	it('Should find a caregiverId by userId', async () => {
 		const newUser: IUserInsertData = {
-			name: 'Jane Doe',
-			email: 'jane@example.com',
+			name: 'Caregiver To Find',
+			email: 'caregiver.tofind@example.com',
 			password: '12345',
 		};
 		const user = await db.addUser(newUser);
@@ -105,8 +101,8 @@ describe('Database', () => {
 
 	it('Should find a patientId by userId', async () => {
 		const newUser: IUserInsertData = {
-			name: 'John Doe',
-			email: 'john@example.com',
+			name: 'Patient To Find',
+			email: 'patient.tofind@example.com',
 			password: '12345',
 		};
 		const user = await db.addUser(newUser);

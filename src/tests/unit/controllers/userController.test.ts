@@ -41,6 +41,7 @@ describe('UserController', () => {
 	beforeEach(() => {
 		req = { body: {} };
 		res = {
+			status: jest.fn<(code: number) => Response>().mockReturnThis(),
 			json: jest.fn<(body?: any) => Response>(),
 		};
 	});
