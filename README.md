@@ -28,7 +28,6 @@ metodologias e arquiteturas para o projeto.
 ## Funcionalidades Implementadas
 
 - Cadastro de pacientes e cuidadores.
-- Acessar conta do usuário.
 
 ## Como Executar
 

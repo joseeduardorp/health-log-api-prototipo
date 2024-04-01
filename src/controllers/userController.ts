@@ -25,7 +25,7 @@ class UserController {
 				accountType,
 			});
 
-			res.json({
+			res.status(201).json({
 				status: 'success',
 				user,
 			});
