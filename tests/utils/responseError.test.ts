@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { ResponseError } from '../../../utils/responseError';
+import { ResponseError } from '../../src/utils/responseError';
 
 describe('ResponseError', () => {
 	it('Create a new ResponseError with passed parameters', () => {

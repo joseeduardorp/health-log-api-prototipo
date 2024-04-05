@@ -1,9 +1,16 @@
 import { Router } from 'express';
 
-import UserController from './controllers/userController';
+import { signUp } from './features/signUp/signUpRoute';
 
 const router = Router();
 
-router.post('/signup', UserController.createUser);
+signUp(router);
+
+router.get('/', (req, res) => {
+	res.status(200).json({
+		status: 'info',
+		message: 'Base route',
+	});
+});
 
 export { router };

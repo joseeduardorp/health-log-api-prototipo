@@ -9,7 +9,7 @@ services:
       POSTGRES_DB: health_log
     volumes:
       - ./src/database/scripts.sql:/docker-entrypoint-initdb.d/scripts.sql
-      - health_log:/var/lib/postgresql/data
+      - health-log-data:/var/lib/postgresql/data
 
 volumes:
-  health_log:
+  health-log-data:

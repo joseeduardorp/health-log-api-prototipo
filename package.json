@@ -1,6 +1,6 @@
 {
 	"name": "health-log-api",
-	"version": "2.0.0",
+	"version": "3.0.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -8,7 +8,10 @@
 		"build": "npx tsc",
 		"test": "jest --verbose",
 		"test:w": "jest --watch",
-		"test:d": "jest --detectOpenHandles"
+		"test:d": "jest --detectOpenHandles",
+		"db-setup:init": "docker compose up -d",
+		"db-setup:rm": "docker compose down",
+		"db-setup:rmv": "docker compose down -v"
 	},
 	"author": "",
 	"license": "ISC",

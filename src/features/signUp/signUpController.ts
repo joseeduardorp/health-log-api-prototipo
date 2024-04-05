@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 
-import UserService from '../services/userService';
-import { IBody } from '../types/createUser';
+import { ResponseError } from '../../utils/responseError';
 
-import { ResponseError } from '../utils/responseError';
+import service from './signUpService';
 
-class UserController {
-	static async createUser(req: Request, res: Response, next: NextFunction) {
+import { IBody } from './types';
+
+export class Controller {
+	async handler(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { name, email, password, accountType } = req.body as IBody;
 
@@ -18,7 +19,7 @@ class UserController {
 				throw new ResponseError(400, 'Invalid request!');
 			}
 
-			const user = await UserService.createUser({
+			const user = await service.execute({
 				name,
 				email,
 				password,
@@ -35,4 +36,4 @@ class UserController {
 	}
 }
 
-export default UserController;
+export default new Controller();

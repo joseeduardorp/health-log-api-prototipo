@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { THandlerError } from '../types/error';
+import { HandlerError } from './types/errorHandler';
 import { ResponseError } from './responseError';
 
 function errorHandler(
-	err: THandlerError,
+	err: HandlerError,
 	req: Request,
 	res: Response,
 	next: NextFunction
