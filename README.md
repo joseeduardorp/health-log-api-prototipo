@@ -1,8 +1,8 @@
-# API do projeto Health Log - v1 [Descontinuado]
+# API do projeto Health Log - v2
 
-Versão v1 do protótipo da API do projeto Health Log, sendo desenvolvida com o
-objetivo de avaliar as tecnologias escolhidas e verificar a necessidade de uso
-outras ferramentas/tecnologias.
+Versão v2 do protótipo da API do projeto Health Log, sendo desenvolvida com o
+objetivo de avaliar as tecnologias escolhidas e testar diferentes padrões,
+metodologias e arquiteturas para o projeto.
 
 ## Pré-requisitos
 
@@ -18,6 +18,7 @@ outras ferramentas/tecnologias.
 ### Banco de dados
 
 - PostgreSQL
+- Knex.js
 
 ### Testes
 
@@ -27,7 +28,6 @@ outras ferramentas/tecnologias.
 ## Funcionalidades Implementadas
 
 - Cadastro de pacientes e cuidadores.
-- Acessar conta do usuário.
 
 ## Como Executar
 

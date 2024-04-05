@@ -1,29 +1,13 @@
-import express, { NextFunction, Request, Response } from 'express';
-
-import { HandlerError } from './types/error';
-import { CustomError } from './utils/customError';
+import express from 'express';
 
 import { router } from './routes';
+import { errorHandler } from './utils/errorHandler';
 
 const app = express();
 
 app.use(express.json());
 app.use(router);
 
-app.use(
-	(err: HandlerError, req: Request, res: Response, next: NextFunction) => {
-		if (err instanceof CustomError) {
-			return res.status(err.statusCode).json({
-				status: 'error',
-				message: err.message,
-			});
-		}
-
-		return res.status(500).json({
-			status: 'error',
-			message: err.message,
-		});
-	}
-);
+app.use(errorHandler);
 
 export default app;

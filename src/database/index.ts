@@ -1,74 +1,75 @@
-import { Client } from 'pg';
+import knex, { Knex } from 'knex';
 
-import { InsertParamsT } from '../types/database';
+import config from '../../config';
+
+import {
+	IUserInsertData,
+	IUserResult,
+	ProfileTypeTables,
+} from '../types/database';
 
 class Database {
-	private client: Client;
+	private client: Knex;
 
 	constructor() {
-		this.client = new Client({
-			host: 'localhost',
-			port: 5432,
-			database: 'cdr_proto',
-			user: 'postgres',
-			password: 'remedios',
+		this.client = knex({
+			client: 'pg',
+			connection: {
+				host: config.postgresHost,
+				port: config.postgresPort,
+				user: config.postgresUser,
+				password: config.postgresPassword,
+				database: config.postgresDb,
+			},
 		});
-
-		this.connect();
-	}
-
-	public async connect() {
-		await this.client.connect();
 	}
 
 	public async disconnect() {
-		await this.client.end();
+		await this.client.destroy();
 	}
 
 	public async truncate(table: string) {
-		try {
-			await this.client.query(`TRUNCATE TABLE "${table}" CASCADE;`);
-		} catch (error) {
-			console.log('truncate error:', error);
-		}
+		return await this.client.raw('truncate table ?? cascade;', table);
 	}
 
-	public async insert(table: string, params: InsertParamsT) {
-		const cols = params.columns.map((col) => `"${col}"`).join(', ');
-		const vals = params.columns.map((v, i) => `$${i + 1}`);
+	public async addUser({ name, email, password }: IUserInsertData) {
+		const [user] = await this.client('Users')
+			.insert({ name, email, password })
+			.returning<IUserResult[]>('*');
 
-		const query = `INSERT INTO "${table}" (${cols}) VALUES (${vals}) RETURNING *;`;
-		const res = await this.client.query(query, params.values);
-
-		return res.rows[0];
+		return user;
 	}
 
-	public async select(
-		table: string,
-		where?: Record<string, any>,
-		limit?: number
+	public async findUserByEmail(email: string) {
+		const user = await this.client
+			.select()
+			.from('Users')
+			.where('email', email)
+			.first<IUserResult | undefined>();
+
+		return user;
+	}
+
+	public async addUserToProfile(
+		profileType: ProfileTypeTables,
+		userId: string
 	) {
-		let query = `SELECT * FROM "${table}"`;
+		const [profileIds] = await this.client(profileType).insert({ userId }, '*');
 
-		if (where) {
-			const keys = Object.keys(where);
-			const filter = keys
-				.map((key) => {
-					if (typeof where[key] === 'string') return `"${key}"='${where[key]}'`;
-					return `"${key}"=${where[key]}`;
-				})
-				.join(' AND ');
+		return profileIds;
+	}
 
-			query += ' WHERE ' + filter;
-		}
+	public async findUserProfileId(
+		profileType: ProfileTypeTables,
+		userId: string
+	) {
+		const ids = await this.client
+			.select()
+			.from(profileType)
+			.where('userId', userId)
+			.first();
 
-		if (limit) {
-			query += ' LIMIT ' + limit;
-		}
-
-		const res = await this.client.query(query);
-
-		return res.rows;
+		return ids;
 	}
 }
 

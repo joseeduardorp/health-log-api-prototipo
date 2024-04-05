@@ -1,4 +1,4 @@
-class CustomError extends Error {
+class ResponseError extends Error {
 	public statusCode: number;
 
 	constructor(statusCode: number, message: string) {
@@ -8,4 +8,4 @@ class CustomError extends Error {
 	}
 }
 
-export { CustomError };
+export { ResponseError };

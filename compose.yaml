@@ -5,11 +5,11 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_PASSWORD: remedios
-      POSTGRES_DB: cdr_proto
+      POSTGRES_PASSWORD: dockerpasswd
+      POSTGRES_DB: health_log
     volumes:
       - ./src/database/scripts.sql:/docker-entrypoint-initdb.d/scripts.sql
-      - cdr_proto:/var/lib/postgresql/data
+      - health_log:/var/lib/postgresql/data
 
 volumes:
-  cdr_proto:
+  health_log:
