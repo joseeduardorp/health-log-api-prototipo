@@ -1,7 +1,7 @@
 import { describe, it, expect } from '@jest/globals';
-import { ResponseError } from '../../src/utils/responseError';
+import { ResponseError } from '../responseError';
 
-describe('ResponseError', () => {
+describe('Unit - Response Error', () => {
 	it('Create a new ResponseError with passed parameters', () => {
 		const error = new ResponseError(600, 'Custom status code error');
 

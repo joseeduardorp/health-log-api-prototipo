@@ -24,10 +24,11 @@ export class Service {
 			}
 
 			const ids = await userModel.addToProfile(userData.id, accountType);
+			const newProfileId = Number(ids[accountType + 'Id']);
 
 			return {
 				userId: userData.id,
-				profileId: ids[accountType + 'Id'],
+				profileId: newProfileId,
 				name,
 				email,
 				accountType,
@@ -36,10 +37,11 @@ export class Service {
 
 		const user = await userModel.addUser({ name, email, password });
 		const ids = await userModel.addToProfile(user.id, accountType);
+		const newProfileId = Number(ids[accountType + 'Id']);
 
 		return {
 			userId: user.id,
-			profileId: ids[accountType + 'Id'],
+			profileId: newProfileId,
 			name,
 			email,
 			accountType,

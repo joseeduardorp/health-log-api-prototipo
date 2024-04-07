@@ -1,4 +1,4 @@
-import { Database } from '../database';
+import Database from '../database';
 
 import { IUser, IInsertData, AccountType } from './types/userModel';
 
@@ -25,7 +25,7 @@ class UserModel extends Database {
 		return user;
 	}
 
-	async findProfileById(userId: string, profileType: AccountType) {
+	async findProfileById(userId: number, profileType: AccountType) {
 		const profileTable = profileType === 'patient' ? 'Patients' : 'Caregivers';
 
 		const ids = await this.client(profileTable)
@@ -37,7 +37,7 @@ class UserModel extends Database {
 		return ids;
 	}
 
-	async addToProfile(userId: string, profileType: AccountType) {
+	async addToProfile(userId: number, profileType: AccountType) {
 		const profileTable = profileType === 'patient' ? 'Patients' : 'Caregivers';
 
 		const [ids] = await this.client(profileTable)

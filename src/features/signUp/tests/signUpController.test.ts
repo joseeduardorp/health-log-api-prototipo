@@ -9,15 +9,15 @@ import {
 } from '@jest/globals';
 import { NextFunction, Request, Response } from 'express';
 
-import controller from '../../../src/features/signUp/signUpController';
-import service from '../../../src/features/signUp/signUpService';
+import controller from '../signUpController';
+import service from '../signUpService';
 
-import { IBody } from '../../../src/features/signUp/types';
-import { AccountType } from '../../../src/models/types/userModel';
+import { IBody } from '../types';
+import { AccountType } from '../../../models/types/userModel';
 
-import { ResponseError } from '../../../src/utils/responseError';
+import { ResponseError } from '../../../utils/responseError';
 
-describe('SignUpController', () => {
+describe('Unit - SignUp Controller', () => {
 	let req: Partial<Request>;
 	let res: Partial<Response>;
 	let next = jest.fn<NextFunction>();
@@ -47,8 +47,8 @@ describe('SignUpController', () => {
 			req.body = bodyData;
 
 			const user = {
-				userId: '1',
-				profileId: '1',
+				userId: 1,
+				profileId: 1,
 				name: bodyData.name,
 				email: bodyData.email,
 				accountType,

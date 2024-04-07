@@ -2,8 +2,8 @@ import knex, { Knex } from 'knex';
 
 import config from '../../config';
 
-export class Database {
-	protected client: Knex;
+class Database {
+	public readonly client: Knex;
 
 	constructor() {
 		this.client = knex({
@@ -23,4 +23,4 @@ export class Database {
 	}
 }
 
-export default new Database();
+export default Database;

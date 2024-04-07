@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { NextFunction, Request, Response } from 'express';
 
-import { errorHandler } from '../../src/utils/errorHandler';
-import { ResponseError } from '../../src/utils/responseError';
+import { errorHandler } from '../errorHandler';
+import { ResponseError } from '../responseError';
 
-describe('ErrorHandler', () => {
+describe('Unit - Error Handler', () => {
 	let req: Partial<Request>;
 	let res: Partial<Response>;
 	let next: jest.Mock<NextFunction>;
