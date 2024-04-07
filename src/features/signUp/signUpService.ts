@@ -1,3 +1,4 @@
+import Database from '../../database';
 import UserModel from '../../models/userModel';
 
 import { ResponseError } from '../../utils/responseError';
@@ -6,7 +7,10 @@ import { IBody as IUserData } from './types';
 
 export class Service {
 	public async execute({ name, email, password, accountType }: IUserData) {
-		const userModel = new UserModel();
+		const db = new Database();
+		await db.connect();
+
+		const userModel = new UserModel(db);
 
 		const userData = await userModel.findByEmail(email);
 

@@ -1,10 +1,20 @@
+import { Knex } from 'knex';
+
 import Database from '../database';
 
 import { IUser, IInsertData, AccountType } from './types/userModel';
 
-class UserModel extends Database {
-	constructor() {
-		super();
+class UserModel {
+	private client: Knex;
+
+	constructor(db: Database) {
+		this.client = db.getClient();
+	}
+
+	async rawQuery(query: string) {
+		const result = await this.client.raw(query);
+
+		return result;
 	}
 
 	async findByEmail(email: string) {

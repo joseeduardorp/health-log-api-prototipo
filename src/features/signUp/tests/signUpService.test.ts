@@ -9,18 +9,24 @@ import {
 
 import service from '../signUpService';
 
+import Database from '../../../database';
 import UserModel from '../../../models/userModel';
+
 import { AccountType } from '../../../models/types/userModel';
 
 describe('Unit - SignUp Service', () => {
+	let db: Database;
 	let userModel: UserModel;
 
-	beforeAll(() => {
-		userModel = new UserModel();
+	beforeAll(async () => {
+		db = new Database();
+		await db.connect();
+
+		userModel = new UserModel(db);
 	});
 
 	afterAll(async () => {
-		await userModel.disconnect();
+		await db.disconnect();
 		jest.restoreAllMocks();
 	});
 

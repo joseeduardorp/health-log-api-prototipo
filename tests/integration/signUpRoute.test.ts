@@ -12,12 +12,14 @@ import { Server } from 'http';
 
 import app from '../../src/app';
 import UserModel from '../../src/models/userModel';
+import Database from '../../src/database';
 
 import { AccountType } from '../../src/models/types/userModel';
 import { IBody } from '../../src/features/signUp/types';
 
 describe('Integration - SignUp Route', () => {
 	let server: Server;
+	let db: Database;
 	let userModel: UserModel;
 	const defaultPatientUser = {
 		name: 'Default Patient User',
@@ -39,15 +41,19 @@ describe('Integration - SignUp Route', () => {
 
 	beforeAll(async () => {
 		server = app.listen(3000);
-		userModel = new UserModel();
+
+		db = new Database();
+		await db.connect();
+
+		userModel = new UserModel(db);
 	});
 
 	afterEach(async () => {
-		await userModel.client.raw('truncate table "Users" cascade');
+		await userModel.rawQuery('truncate table "Users" cascade');
 	});
 
 	afterAll(async () => {
-		await userModel.disconnect();
+		await db.disconnect();
 		server.close();
 	});
 
