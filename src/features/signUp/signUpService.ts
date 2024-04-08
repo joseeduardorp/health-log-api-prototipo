@@ -1,3 +1,4 @@
+import Database from '../../database';
 import UserModel from '../../models/userModel';
 
 import { ResponseError } from '../../utils/responseError';
@@ -6,7 +7,10 @@ import { IBody as IUserData } from './types';
 
 export class Service {
 	public async execute({ name, email, password, accountType }: IUserData) {
-		const userModel = new UserModel();
+		const db = new Database();
+		await db.connect();
+
+		const userModel = new UserModel(db);
 
 		const userData = await userModel.findByEmail(email);
 
@@ -24,10 +28,11 @@ export class Service {
 			}
 
 			const ids = await userModel.addToProfile(userData.id, accountType);
+			const newProfileId = Number(ids[accountType + 'Id']);
 
 			return {
 				userId: userData.id,
-				profileId: ids[accountType + 'Id'],
+				profileId: newProfileId,
 				name,
 				email,
 				accountType,
@@ -36,10 +41,11 @@ export class Service {
 
 		const user = await userModel.addUser({ name, email, password });
 		const ids = await userModel.addToProfile(user.id, accountType);
+		const newProfileId = Number(ids[accountType + 'Id']);
 
 		return {
 			userId: user.id,
-			profileId: ids[accountType + 'Id'],
+			profileId: newProfileId,
 			name,
 			email,
 			accountType,

@@ -9,6 +9,8 @@
 		"test": "jest --verbose",
 		"test:w": "jest --watch",
 		"test:d": "jest --detectOpenHandles",
+		"test:u": "jest --verbose --testNamePattern=Unit",
+		"test:i": "jest --verbose --testNamePattern=Integration",
 		"db-setup:init": "docker compose up -d",
 		"db-setup:rm": "docker compose down",
 		"db-setup:rmv": "docker compose down -v"

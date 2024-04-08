@@ -63,13 +63,6 @@ para o projeto.
 ```
 
 5. Acesse a API através do endereço: `http://localhost:3000`.
-6. (Opcional) Execute os testes do projeto:
-
-```bash
-  npm run test
-  # ou
-  yarn test
-```
 
 ## Removendo o Container
 
@@ -87,4 +80,38 @@ para o projeto.
   npm run setup-db:rmv
   # ou
   yarn setup-db:rmv
+```
+
+## Executar os testes
+
+1. Para rodar todas as baterias de teste, execute:
+
+```bash
+  npm run test
+  # ou
+  yarn test
+```
+
+2. Para rodar todas as baterias de teste no modo `watch`, execute:
+
+```bash
+  npm run test:w
+  # ou
+  yarn test:w
+```
+
+3. Para rodar apenas as baterias de testes unitários, execute:
+
+```bash
+  npm run test:u
+  # ou
+  yarn test:u
+```
+
+4. Para rodar apenas as baterias de testes de integração, execute:
+
+```bash
+  npm run test:i
+  # ou
+  yarn test:i
 ```

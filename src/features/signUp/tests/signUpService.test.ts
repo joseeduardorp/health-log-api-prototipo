@@ -7,20 +7,26 @@ import {
 	test,
 } from '@jest/globals';
 
-import service from '../../../src/features/signUp/signUpService';
+import service from '../signUpService';
 
-import UserModel from '../../../src/models/userModel';
-import { AccountType } from '../../../src/models/types/userModel';
+import Database from '../../../database';
+import UserModel from '../../../models/userModel';
 
-describe('SignUpService', () => {
+import { AccountType } from '../../../models/types/userModel';
+
+describe('Unit - SignUp Service', () => {
+	let db: Database;
 	let userModel: UserModel;
 
-	beforeAll(() => {
-		userModel = new UserModel();
+	beforeAll(async () => {
+		db = new Database();
+		await db.connect();
+
+		userModel = new UserModel(db);
 	});
 
 	afterAll(async () => {
-		await userModel.disconnect();
+		await db.disconnect();
 		jest.restoreAllMocks();
 	});
 
@@ -39,7 +45,7 @@ describe('SignUpService', () => {
 				.spyOn(UserModel.prototype, 'findByEmail')
 				.mockResolvedValue(undefined);
 			jest.spyOn(UserModel.prototype, 'addUser').mockResolvedValue({
-				id: '1',
+				id: 1,
 				name: userData.name,
 				email: userData.email,
 				password: userData.password,
@@ -57,8 +63,8 @@ describe('SignUpService', () => {
 			// assert
 			expect(newUser).toStrictEqual(
 				expect.objectContaining({
-					userId: expect.any(String),
-					profileId: expect.any(String),
+					userId: expect.any(Number),
+					profileId: expect.any(Number),
 					name: userData.name,
 					email: userData.email,
 					accountType,
@@ -72,7 +78,7 @@ describe('SignUpService', () => {
 		async (accountType) => {
 			// arrange
 			const existingUserData = {
-				id: '1',
+				id: 1,
 				name: `${accountType} user`,
 				email: `${accountType}.user@example.com`,
 				password: '12345',
@@ -103,8 +109,8 @@ describe('SignUpService', () => {
 			// assert
 			expect(user).toStrictEqual(
 				expect.objectContaining({
-					userId: expect.any(String),
-					profileId: expect.any(String),
+					userId: expect.any(Number),
+					profileId: expect.any(Number),
 					name: newUserProfile.name,
 					email: newUserProfile.email,
 					accountType: newUserProfile.accountType,
@@ -118,7 +124,7 @@ describe('SignUpService', () => {
 		async (accountType) => {
 			// arrange
 			const existingUserData = {
-				id: '1',
+				id: 1,
 				name: `Existing ${accountType} user`,
 				email: `${accountType}.user@example.com`,
 				password: '12345',
