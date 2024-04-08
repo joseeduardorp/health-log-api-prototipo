@@ -17,6 +17,14 @@ class UserModel {
 		return result;
 	}
 
+	async addUser({ name, email, password }: IInsertData) {
+		const [user] = await this.client('Users')
+			.insert({ name, email, password })
+			.returning<IUser[]>('*');
+
+		return user;
+	}
+
 	async findByEmail(email: string) {
 		const user = await this.client('Users')
 			.select()
@@ -27,12 +35,14 @@ class UserModel {
 		return user;
 	}
 
-	async addUser({ name, email, password }: IInsertData) {
-		const [user] = await this.client('Users')
-			.insert({ name, email, password })
-			.returning<IUser[]>('*');
+	async addToProfile(userId: number, profileType: AccountType) {
+		const profileTable = profileType === 'patient' ? 'Patients' : 'Caregivers';
 
-		return user;
+		const [ids] = await this.client(profileTable)
+			.insert({ userId })
+			.returning('*');
+
+		return ids;
 	}
 
 	async findProfileById(userId: number, profileType: AccountType) {
@@ -43,16 +53,6 @@ class UserModel {
 			.where({ userId })
 			.returning('*')
 			.first();
-
-		return ids;
-	}
-
-	async addToProfile(userId: number, profileType: AccountType) {
-		const profileTable = profileType === 'patient' ? 'Patients' : 'Caregivers';
-
-		const [ids] = await this.client(profileTable)
-			.insert({ userId })
-			.returning('*');
 
 		return ids;
 	}
