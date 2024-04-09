@@ -35,6 +35,11 @@ para o projeto.
 - Cadastro de usuário
 - ...
 
+## Atenção
+
+Certifique-se de ter o Docker instalado e rodando antes de executar os comandos
+abaixo.
+
 ## Como Executar
 
 1. Clone este repositório.
@@ -82,7 +87,7 @@ para o projeto.
   yarn setup-db:rmv
 ```
 
-## Executar os testes
+## Executando os testes
 
 1. Para rodar todas as baterias de teste, execute:
 
