@@ -33,7 +33,7 @@ para o projeto.
 ## Funcionalidades Implementadas
 
 - Cadastro de usuário
-- ...
+- Autenticação de usuário
 
 ## Como Executar
 
