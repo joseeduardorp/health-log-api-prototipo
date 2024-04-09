@@ -12,6 +12,7 @@ const config: Config = {
 	testEnvironment: 'node',
 	coverageReporters: ['html', 'text'],
 	setupFiles: ['<rootDir>/jest.setup.ts'],
+	maxWorkers: 1,
 };
 
 export default config;
